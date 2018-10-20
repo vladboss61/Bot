@@ -16,17 +16,23 @@ namespace TelegramBot
     {
         public static void Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(path: "Logs\\BotLogs.txt", rollingInterval: RollingInterval.Day).CreateLogger();
-
+            Log.Logger = new LoggerConfiguration().WriteTo.Console(Serilog.Events.LogEventLevel.Error)
+                .WriteTo.File(path: "Logs\\BotLogs.txt", 
+                              rollingInterval: RollingInterval.Day, 
+                              restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose).CreateLogger();
             try
             {
                 CreateWebHostBuilder(args).Build().Run();
             }
             catch (Exception ex)
             {
-                Log.Logger.Fatal($"Unhandled exception from Telegram Bot {Environment.NewLine} StackTrace: {ex.StackTrace}.");
+                Log.Logger.Error(ex,
+                    $"Unhandled exception from Telegram Bot {Environment.NewLine} StackTrace: {ex.StackTrace}.");
                 throw;
+            }
+            finally
+            {
+                Log.Logger.Information("Application is stopped.");
             }            
         }
 
