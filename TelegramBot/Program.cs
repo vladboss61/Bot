@@ -7,6 +7,8 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Capturing;
 
 namespace TelegramBot
 {
@@ -14,11 +16,31 @@ namespace TelegramBot
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File(path: "Logs\\BotLogs.txt", rollingInterval: RollingInterval.Day).CreateLogger();
+
+            try
+            {
+                CreateWebHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Fatal($"Unhandled exception from Telegram Bot {Environment.NewLine} StackTrace: {ex.StackTrace}.");
+                throw;
+            }            
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .AddCommandLine(args)
+                .Build();
+            
+            return WebHost.CreateDefaultBuilder(args)          
+                    .UseConfiguration(configuration)
+                    .UseStartup<Startup>();
+        }
     }
 }
