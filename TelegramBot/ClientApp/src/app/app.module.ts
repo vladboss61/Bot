@@ -5,6 +5,7 @@ import {
   MatButtonModule,
 } from '@angular/material';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { AppComponent } from './app.component';
   imports: [// DI module here.
     BrowserModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    HttpClientModule
   ],
   providers: [/* register services here*/], 
   bootstrap: [AppComponent]

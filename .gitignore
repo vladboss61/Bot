@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+#Bot configuration
+botsettings.json
+
 # compiled output
 /dist
 /dist-server
@@ -19,7 +22,8 @@
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
+TelegramBot/.vscode
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
