@@ -1,16 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import {
+  MatCardModule,
+  MatButtonModule,
+} from '@angular/material';
 import { AppComponent } from './app.component';
 
+
 @NgModule({
-  declarations: [
-    AppComponent
+  declarations: [// DI component here.
+    AppComponent 
   ],
-  imports: [
-    BrowserModule
+  imports: [// DI module here.
+    BrowserModule,
+    MatButtonModule,
+    MatCardModule
   ],
-  providers: [],
+  providers: [/* register services here*/], 
   bootstrap: [AppComponent]
 })
 export class AppModule { }

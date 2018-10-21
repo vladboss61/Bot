@@ -1,0 +1,2 @@
+2018-10-21 22:16:50.7004 --  Fatal -- Server is down. Fatal Test Exception
+2018-10-21 22:17:09.6102 --  Fatal -- Server is down. Fatal Test Exception
