@@ -1,3 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~bootstrap/dist/css/bootstrap.css";
+/* Added bootstrap by command npm install bootstrap font-awesome  into Client App file and export here over all css of angular project.*/
+@import "~bootstrap/dist/css/bootstrap.css"; 
 @import "~font-awesome/css/font-awesome.css";
+
+body {
+  margin: 0;
+  padding: 0;
+}
