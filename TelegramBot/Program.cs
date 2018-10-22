@@ -35,6 +35,7 @@ namespace TelegramBot
                         .AddCommandLine(args)
                         .SetBasePath(Directory.GetCurrentDirectory())
                         .AddJsonFile("appsettings.json", true, true)
+                        .AddJsonFile("botsettings.json", false, true)
                         .Build();
 
             return WebHost.CreateDefaultBuilder(args)
