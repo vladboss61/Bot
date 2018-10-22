@@ -10,7 +10,7 @@ export class AppComponent {
   public title: string;
 
   constructor(http: HttpClient){
-    http.get('api/Bot/GetName', {responseType: 'text'}).subscribe(result => {
+    http.get('api/bot/name', {responseType: 'text'}).subscribe(result => {
       this.title = result;
     }, error => console.error(error));
   }

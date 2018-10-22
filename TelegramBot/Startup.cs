@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using TelegramBot.Extensions;
+using TelegramBot.Models.Commands;
 
 namespace TelegramBot
 {
@@ -30,6 +31,11 @@ namespace TelegramBot
             });
 
             services.AddTelegramBot();
+
+            //this method adds telegram commands.
+            //Further request it as IReadOnlyList<Command>
+            services.AddTelegramBotCommands();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,10 +48,10 @@ namespace TelegramBot
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                //app.UseHsts();
             }
-
-            app.UseHttpsRedirection();
+            //Https redirection and HSTS disabled because ngrok translates https requests to http
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseMvc(routes => routes.MapRoute(name: "default", template: "{controller}/{action=Index}/{id?}"));
