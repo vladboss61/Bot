@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Telegram.Bot;
 using TelegramBot.Models.Commands;
+using TelegramBot.Models;
 
 namespace TelegramBot.Extensions{
     public static class ServiceExtensions{
@@ -25,6 +26,7 @@ namespace TelegramBot.Extensions{
 
             //Add new commands here
             botCommands.Add(new HelloCommand());
+            botCommands.Add(new StartCommand(services.BuildServiceProvider().GetService<BotDbContext>()));
 
             services.AddSingleton<IReadOnlyList<Command>>(provider => {
                return botCommands.AsReadOnly(); 

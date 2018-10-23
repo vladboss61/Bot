@@ -7,11 +7,19 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
 using TelegramBot.Models.Commands;
+using TelegramBot.Models;
+using System.Linq;
 
 namespace TelegramBot.Controllers{
+    
 
     [Route("api/bot")]
     public class BotController : Controller{
+        private BotDbContext _db;
+        public BotController(BotDbContext context)
+        {
+            _db = context;
+        }
         [HttpGet("name")]
         public async Task<string> GetName(){
             var botClient = HttpContext.RequestServices.GetService<Telegram.Bot.TelegramBotClient>();
@@ -21,7 +29,7 @@ namespace TelegramBot.Controllers{
         }
 
         [HttpPost("update")]
-        public async Task<OkResult> Update([FromBody] Update update){
+        public async Task<IActionResult> Update([FromBody] Update update){
             var commands = HttpContext.RequestServices.GetRequiredService<IReadOnlyList<Command>>();
             var client = HttpContext.RequestServices.GetRequiredService<Telegram.Bot.TelegramBotClient>();
 
@@ -50,6 +58,11 @@ namespace TelegramBot.Controllers{
             await client.SendTextMessageAsync(message.Chat.Id, "I dont know this command");
 
             return Ok();
+        }
+
+        [HttpGet("users")]
+        public ActionResult<IEnumerable<BotUser>> GetUsers(){
+            return Ok(_db.BotUsers.ToList());
         }
     }
 }

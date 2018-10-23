@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 using TelegramBot.Extensions;
 using TelegramBot.Models.Commands;
+using TelegramBot.Models;
+
 
 namespace TelegramBot
 {
@@ -30,6 +33,8 @@ namespace TelegramBot
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<BotDbContext>(options => options.UseNpgsql(connectionString));
             services.AddTelegramBot();
 
             //this method adds telegram commands.
