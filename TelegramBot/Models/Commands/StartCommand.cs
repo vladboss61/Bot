@@ -16,14 +16,13 @@ namespace TelegramBot.Models.Commands{
             _db = context;
         }
 
-        public override async Task ExecuteAsync(Message message, TelegramBotClient client)
+        public override async Task ExecuteAsync(IMessage message, TelegramBotClient client)
         {
-            BotUser user = new BotUser().MessageToUser(message);
+            var user = new BotUser().MessageToUser(message);
             _db.BotUsers.Add(user);
             await _db.SaveChangesAsync();
             
-            await client.SendTextMessageAsync(user.ChatId, 
-                $"You are now registered, {user.FirstName}");
+            await client.SendTextMessageAsync(user.ChatId, $"You are now registered, {user.FirstName}");
         }
     }
 
