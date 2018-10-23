@@ -26,14 +26,14 @@ namespace TelegramBot.Extensions{
         }
 
         public static IServiceCollection AddTelegramBotCommands(this IServiceCollection services){
-            List<Command> botCommands = new List<Command>();
+            IReadOnlyList<Command> botCommands = new List<Command>()
+            {
+                new HelloCommand(),
+                new StartCommand(services.BuildServiceProvider()
+                                         .GetService<BotDbContext>())
+            };            
 
-            //Add new commands here
-            botCommands.Add(new HelloCommand());
-            botCommands.Add(new StartCommand(
-                services.BuildServiceProvider().GetService<BotDbContext>()));
-
-            services.AddSingleton<IReadOnlyList<Command>>(provider => botCommands.AsReadOnly());
+            services.AddSingleton<IReadOnlyList<Command>>(provider => botCommands);
             return services;
         }
     }
