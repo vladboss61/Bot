@@ -1,3 +1,5 @@
+using TelegramBot.Extensions;
+
 namespace TelegramBot.Models
 {
     using System;
@@ -22,7 +24,7 @@ namespace TelegramBot.Models
         public BotRepository(BotDbContext context, TelegramBotClient client, IReadOnlyList<Command> commands)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
-            BotClient =  client ?? throw new ArgumentNullException(nameof(client));
+            BotClient = client ?? throw new ArgumentNullException(nameof(client));
             Commands =  commands ?? throw new ArgumentNullException(nameof(commands));
         }
 
@@ -39,26 +41,25 @@ namespace TelegramBot.Models
 
         public async Task Update(Update update)
         {
-            Message message = MessageFactory.CreateMessage(update);
+            var message = MessageFactory.CreateMessage(update);
 
             //Proccessing updates of concrete type
             if (message == null)
             {
                 throw new Exception("thiking about text and type of exceptions");
             } 
-
-
+            
             //Search corresponding command and execute it
-            foreach(var command in Commands)
+            var command = Commands.FirstOrDefault(cmd => cmd.CanExecute(message.Text));
+
+            if (command == null)
             {
-                if (command.Contains(message.Text))
-                {
-                    await command.ExecuteAsync(message, BotClient);
-                }
+                await BotClient.SendTextMessageAsync(message.Chat.Id, "I don't know this command");
+                return;
             }
 
-            //think about creating of ServiceCommands for such purposes
-            await BotClient.SendTextMessageAsync(message.Chat.Id, "I dont know this command");
+            await command.ExecuteAsync(message, BotClient);            
+            //think about creating of ServiceCommands for such purposes            
         }
     }
 }
