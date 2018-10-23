@@ -22,8 +22,9 @@ export class AppComponent {
     this.users = this.getUsers();
   }
 
-  public getUsers() : Observable<BotUser[]>{
-    return this.http.get('api/bot/users').pipe(map(re => re)).source;
+  public getUsers(): Observable<BotUser[]>{
+    return this.http.get('api/bot/users')
+      .pipe<BotUser[]>(map(re => re as BotUser[]));
   }
 }
 
