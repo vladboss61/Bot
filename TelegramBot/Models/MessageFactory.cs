@@ -5,8 +5,8 @@ namespace TelegramBot.Models
 {
     internal class MessageFactory
     {
-        public static Message CreateMessage(Update update)
-        {
+        public static IMessage CreateMessageOrDefault(Update update)
+        {            
             Message message;
                switch(update.Type)
                {
@@ -14,10 +14,11 @@ namespace TelegramBot.Models
                         message = update.Message;
                         break;         
                     default:
-                        message =  null;
+                        message = null;
                         break;                               
                 }
-            return message;
+            
+            return new MessageAdapter(message);
         }
     }
 }

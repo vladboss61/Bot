@@ -7,9 +7,9 @@ namespace TelegramBot.Models.Commands{
     public abstract class Command
     {
 
-        public abstract string Name{get;}
+        public abstract string Name{ get; }
 
-        public abstract Task ExecuteAsync(Message message, TelegramBotClient client);
+        public abstract Task ExecuteAsync(IMessage message, TelegramBotClient client);
 
         public bool CanExecute(string command)
         {

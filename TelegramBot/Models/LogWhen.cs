@@ -5,7 +5,13 @@ using System.Threading.Tasks;
 
 namespace TelegramBot.Models
 {
-    public class Log
+    public static class LogWhen
     {
+        public static bool Logging(Action logIn)
+        {
+            logIn();
+
+            return false;
+        }
     }
 }
