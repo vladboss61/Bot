@@ -18,11 +18,11 @@ namespace TelegramBot.Models
     {
         public BotDbContext Context { get; } 
 
-        public TelegramBotClient BotClient {get;}
+        public ITelegramBotClient BotClient {get;}
 
         public IReadOnlyList<Command> Commands { get; }
         
-        public BotRepository(BotDbContext context, TelegramBotClient client, IReadOnlyList<Command> commands)
+        public BotRepository(BotDbContext context, ITelegramBotClient client, IReadOnlyList<Command> commands)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
             BotClient = client ?? throw new ArgumentNullException(nameof(client));
@@ -42,7 +42,7 @@ namespace TelegramBot.Models
 
         public async Task Update(Update update)
         {
-            var message = MessageFactory.CreateMessage(update);
+            var message = MessageFactory.CreateMessageOrDefault(update);
 
             //Proccessing updates of concrete type
             if (message == null)

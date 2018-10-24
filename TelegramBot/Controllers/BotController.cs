@@ -42,7 +42,11 @@ namespace TelegramBot.Controllers{
            return Ok();
         }
 
+<<<<<<< HEAD
         [HttpGet("users")]
+=======
+        [HttpGet("/users")]
+>>>>>>> 69e6475248707968969a4cafddc86e6ec8053e5f
         public async Task<ActionResult<IEnumerable<BotUser>>> GetAll()
         {
             return Ok(await BotRepository.GetUsers());

@@ -1,3 +1,5 @@
+using TelegramBot.Models;
+
 namespace TelegramBot
 {
     using System;
@@ -22,11 +24,7 @@ namespace TelegramBot
                 //For Example Test Logging in file and console by Nlog  =>  throw new Exception("Test Exception");
                 host.Run();
             }
-            catch(Exception ex)
-            {
-                logger.Fatal(ex, "Server is down. Fatal");
-                throw;
-            }
+            catch(Exception ex) when(LogWhen.Logging(() => logger.Fatal(ex, "Server is down. Fatal"))) { }             
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)

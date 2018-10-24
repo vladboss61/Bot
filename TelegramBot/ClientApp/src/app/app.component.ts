@@ -8,12 +8,14 @@ import { Observable } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent
+{
   public title: string;
   public users: Observable<BotUser[]>;
   public http: HttpClient;
 
-  constructor(http: HttpClient){
+  constructor(http: HttpClient)
+  {
     http.get('api/bot/name', {responseType: 'text'}).subscribe(result => {
       this.title = result;
     }, error => console.error(error));
@@ -22,12 +24,15 @@ export class AppComponent {
     this.users = this.getUsers();
   }
 
-  public getUsers() : Observable<BotUser[]>{
-    return this.http.get('api/bot/users').pipe(map(re => re)).source;
+  public getUsers(): Observable<BotUser[]>
+  {
+    return this.http.get('api/bot/users')
+      .pipe<BotUser[]>(map(re => re as BotUser[]));
   }
 }
 
-class BotUser{
+class BotUser
+{
   public chatId: number;
   public firstName: string;
 }

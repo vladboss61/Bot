@@ -8,9 +8,10 @@ namespace TelegramBot.Models.Commands{
     {
         public override string Name => "hello";
 
-        public override async Task ExecuteAsync(Message message, TelegramBotClient client)
+        public override async Task ExecuteAsync(IMessage message, ITelegramBotClient client)
         {
             var chatId = message.Chat.Id;
+
             var messageId = message.MessageId;
 
             await client.SendTextMessageAsync(chatId, "Hello", replyToMessageId: messageId);
