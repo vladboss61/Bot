@@ -12,6 +12,7 @@ namespace TelegramBot.Models
     using TelegramBot.Models.Commands;
     using Telegram.Bot.Types.Enums;
     using System.Linq;
+    using Microsoft.EntityFrameworkCore;
 
     internal class BotRepository : IBotRepository
     {
@@ -36,7 +37,7 @@ namespace TelegramBot.Models
 
         public async Task<IEnumerable<BotUser>> GetUsers()
         {
-           return await Task.Run(() => Context.BotUsers.ToList());
+            return await Task.Run(() => Context.BotUsers.ToList());
         }
 
         public async Task Update(Update update)

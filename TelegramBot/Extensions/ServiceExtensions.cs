@@ -14,7 +14,7 @@ namespace TelegramBot.Extensions{
         
         public static IServiceCollection AddTelegramBot(this IServiceCollection services)
         {
-            return services.AddSingleton<TelegramBotClient>(provider => 
+            services.AddSingleton<TelegramBotClient>(provider => 
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();
                 var client = new TelegramBotClient(configuration.GetToken());
@@ -23,6 +23,10 @@ namespace TelegramBot.Extensions{
                 
                 return client;
             });
+
+            services.AddTransient<IBotRepository, BotRepository>();
+
+            return services;
         }
 
         public static IServiceCollection AddTelegramBotCommands(this IServiceCollection services){

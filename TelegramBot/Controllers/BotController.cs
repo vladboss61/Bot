@@ -21,13 +21,13 @@ namespace TelegramBot.Controllers{
             BotRepository = botRepository ?? throw  new ArgumentNullException(nameof(botRepository));
         }
 
-        [HttpGet("/name")]
+        [HttpGet("name")]
         public async Task<ActionResult> Get()
         {            
             return new OkObjectResult(await BotRepository.GetName());
         }
 
-        [HttpPost("/update")]
+        [HttpPost("update")]
         public async Task<IActionResult> Update([FromBody] Update update)
         {
             try
@@ -42,10 +42,10 @@ namespace TelegramBot.Controllers{
            return Ok();
         }
 
-        [HttpGet("/users")]
-        public ActionResult<IEnumerable<BotUser>> GetAll()
+        [HttpGet("users")]
+        public async Task<ActionResult<IEnumerable<BotUser>>> GetAll()
         {
-            return Ok(BotRepository.GetUsers());
+            return Ok(await BotRepository.GetUsers());
         }
     }
 }
