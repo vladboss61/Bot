@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -10,20 +11,26 @@ namespace TelegramBot.Models.Commands{
     {
         public override string Name => "start";
 
-        private readonly BotDbContext _db;
+        private readonly IBotRepository _repository;
 
-        public StartCommand(BotDbContext context)
+        public StartCommand(IBotRepository repository)
         {
-            _db = context;
+            _repository = repository;
         }
 
         public override async Task ExecuteAsync(IMessage message, ITelegramBotClient client)
         {   
             var user = new BotUser().MessageToUser(message);
-            _db.BotUsers.Add(user);
-            await _db.SaveChangesAsync();
             
-            await client.SendTextMessageAsync(user.ChatId, $"You are now registered, {user.FirstName}");
+            try{
+                await _repository.AddUser(user);
+                await client.SendTextMessageAsync(user.ChatId, $"You are now registered, {user.FirstName}");
+            }
+            catch(Exception ex){
+                await client.SendTextMessageAsync(user.ChatId, "You're already registered");
+            }
+            
+            
         }
     }    
 }

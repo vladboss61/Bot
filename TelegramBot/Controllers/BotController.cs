@@ -5,8 +5,12 @@ namespace TelegramBot.Controllers{
     using System.Linq;
     using System;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Telegram.Bot;
     using Telegram.Bot.Types;
     using Telegram.Bot.Types.Enums;
+
     using TelegramBot.Models.Commands;
     using TelegramBot.Models;
     
@@ -30,14 +34,27 @@ namespace TelegramBot.Controllers{
         [HttpPost("update")]
         public async Task<IActionResult> Update([FromBody] Update update)
         {
-            try
+            var commandsCollection = HttpContext.RequestServices.GetRequiredService<CommandsCollection>();
+            var client = HttpContext.RequestServices.GetRequiredService<ITelegramBotClient>();
+            var message = MessageFactory.CreateMessageOrDefault(update);
+
+            //Proccessing updates of concrete type
+            if (message == null)
             {
-                await BotRepository.Update(update);                
-            }
-            catch (System.Exception)
+                throw new Exception("thiking about text and type of exceptions");
+            } 
+            
+            //Search corresponding command and execute it
+            var command = commandsCollection.Commands.FirstOrDefault(cmd => cmd.CanExecute(message.Text));
+
+            if (command == null)
             {
-                // Some logic with exceptions;
+                await client.SendTextMessageAsync(message.Chat.Id, "I don't know this command");
+                return Ok();
             }
+
+            await command.ExecuteAsync(message, client);            
+            //think about creating of ServiceCommands for such purposes  
 
            return Ok();
         }
