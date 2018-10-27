@@ -6,10 +6,9 @@ namespace TelegramBot.Models
 
     public interface IBotRepository    
     {
-        Task<string> GetName();        
-        
-        Task Update(Update update);
-
+        Task<string> GetName();    
         Task<IEnumerable<BotUser>> GetUsers();
+        Task AddUser(BotUser user);
+        Task DeleteUser(long chatId);
     }     
 }

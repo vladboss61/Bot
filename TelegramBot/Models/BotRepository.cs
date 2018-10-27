@@ -12,20 +12,18 @@ namespace TelegramBot.Models
     using TelegramBot.Models.Commands;
     using Telegram.Bot.Types.Enums;
     using System.Linq;
+    using Microsoft.EntityFrameworkCore;
 
     internal class BotRepository : IBotRepository
     {
         public BotDbContext Context { get; } 
 
         public ITelegramBotClient BotClient {get;}
-
-        public IReadOnlyList<Command> Commands { get; }
         
-        public BotRepository(BotDbContext context, ITelegramBotClient client, IReadOnlyList<Command> commands)
+        public BotRepository(BotDbContext context, ITelegramBotClient client)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
             BotClient = client ?? throw new ArgumentNullException(nameof(client));
-            Commands =  commands ?? throw new ArgumentNullException(nameof(commands));
         }
 
         public async Task<string> GetName()
@@ -36,30 +34,27 @@ namespace TelegramBot.Models
 
         public async Task<IEnumerable<BotUser>> GetUsers()
         {
-           return await Task.Run(() => Context.BotUsers.ToList());
+            return await Task.Run(() => Context.BotUsers.ToList());
         }
 
-        public async Task Update(Update update)
+        public async Task AddUser(BotUser user){
+            if (await Context.BotUsers.FirstOrDefaultAsync(x => x.ChatId == user.ChatId) != null)
+                throw new Exception("User with such chat id exists in database");
+
+            Context.BotUsers.Add(user);
+            await Context.SaveChangesAsync();
+        }
+
+        public async Task DeleteUser(long chatId)
         {
-            var message = MessageFactory.CreateMessageOrDefault(update);
+            var user = await Context.BotUsers.FirstOrDefaultAsync(x => x.ChatId == chatId);
 
-            //Proccessing updates of concrete type
-            if (message == null)
-            {
-                throw new Exception("thiking about text and type of exceptions");
-            } 
-            
-            //Search corresponding command and execute it
-            var command = Commands.FirstOrDefault(cmd => cmd.CanExecute(message.Text));
-
-            if (command == null)
-            {
-                await BotClient.SendTextMessageAsync(message.Chat.Id, "I don't know this command");
-                return;
+            if (user == null){
+                throw new Exception("User with such id doesn't exist in database");
             }
 
-            await command.ExecuteAsync(message, BotClient);            
-            //think about creating of ServiceCommands for such purposes            
+            Context.BotUsers.Remove(user);
+            await Context.SaveChangesAsync();
         }
     }
 }

@@ -1,2 +1,4 @@
 2018-10-21 22:16:50.7004 --  Fatal -- Server is down. Fatal Test Exception
 2018-10-21 22:17:09.6102 --  Fatal -- Server is down. Fatal Test Exception
+2018-10-25 00:15:08.4080 -- Fatal -- Server is down. Fatal -- Unable to resolve service for type 'System.Collections.Generic.IReadOnlyList`1[TelegramBot.Models.Commands.Command]' while attempting to activate 'TelegramBot.Models.BotRepository'. --
+2018-10-25 00:21:06.1501 -- Fatal -- Server is down. Fatal -- Unable to resolve service for type 'System.Collections.Generic.IReadOnlyList`1[TelegramBot.Models.Commands.Command]' while attempting to activate 'TelegramBot.Models.BotRepository'. --

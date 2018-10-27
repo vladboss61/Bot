@@ -10,30 +10,34 @@ using TelegramBot.Models;
 namespace TelegramBot.Extensions{
     public static class ServiceExtensions
     {
-        private const string Url = "api/bot/update";
+        private const string action = "api/bot/update";
         
         public static IServiceCollection AddTelegramBot(this IServiceCollection services)
         {
-            return services.AddSingleton<TelegramBotClient>(provider => 
+            services.AddSingleton<ITelegramBotClient>(provider => 
             {
                 var configuration = provider.GetRequiredService<IConfiguration>();
                 var client = new TelegramBotClient(configuration.GetToken());
                 
-                client.SetWebhookAsync(Path.Combine(configuration.GetBotHost(), Url));                
+                client.SetWebhookAsync(Path.Combine(configuration.GetBotHost(), action));                
                 
                 return client;
             });
+
+            services.AddTransient<IBotRepository, BotRepository>();
+
+            return services;
         }
 
         public static IServiceCollection AddTelegramBotCommands(this IServiceCollection services){
-            IReadOnlyList<Command> botCommands = new List<Command>()
-            {
-                new HelloCommand(),
-                new StartCommand(services.BuildServiceProvider()
-                                         .GetService<BotDbContext>())
-            };            
+            // IReadOnlyList<Command> botCommands = new List<Command>()
+            // {
+            //     new HelloCommand(),
+            //     new StartCommand(services.BuildServiceProvider()
+            //                              .GetService<IBotRepository>())
+            // };            
 
-            services.AddSingleton<IReadOnlyList<Command>>(provider => botCommands);
+            services.AddTransient<CommandsCollection>();
             return services;
         }
     }
