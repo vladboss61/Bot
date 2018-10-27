@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using TelegramBot.Extensions;
 using TelegramBot.Models.Commands;
 using TelegramBot.Models;
-
+using Telegram.Bot;
 
 namespace TelegramBot
 {
@@ -25,15 +25,14 @@ namespace TelegramBot
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IConfiguration>(provider => Configuration);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton<IConfiguration>(provider => Configuration);
+            services.AddScoped<IBotRepository, BotRepository>();            
 
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);            
+            services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<BotDbContext>(options => options.UseNpgsql(connectionString));
             services.AddTelegramBot();
 
