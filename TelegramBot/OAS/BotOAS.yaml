@@ -1,0 +1,112 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Bot Open API Specification
+  description: >-
+    A sample API to the web service with bot communication.
+  termsOfService: 'Vlad and Misha'
+  contact:
+    name: Telegram Bot.
+  license:
+    name: MIT
+host: localhost
+basePath: /api
+schemes:
+  - http
+  - https
+paths:
+  /bots:
+    get:
+      description: Returns all users from the system that use bot.
+      produces: 
+        - application/json
+      responses:
+        '200':
+          description: Get all users. 
+          schema:
+            $ref: '#/definitions/UsersBot'
+        
+        '404':
+          description: User was not found.
+          
+  /bot/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          description: Id of specific 
+          required: true
+          type: integer
+          format: int64
+          
+      description: Returns all users from the system that use bot.
+      produces:
+        - application/json
+        
+      responses:
+        '200':
+          description: Get specific user by id in route.
+          schema:
+            $ref: '#/definitions/UserBot'
+        '404':
+          description: User not found.
+          
+      
+# does not have request body as key - value because has parameters that which include body
+    put: 
+      consumes:
+        - application/json
+      
+      description: Registrate user when was registration.
+      parameters:
+        - name: id
+          in: path
+          description: Id of specific user. 
+          required: true
+          type: integer
+          format: int64
+        
+        - name: User  
+          in: body
+          description: Body of specific user. 
+          required: true
+          schema:
+            $ref: '#/definitions/UserBot'
+      
+      responses:
+        '200':
+          description: User is exist.
+          schema:
+            $ref: '#/definitions/UserBot'
+          
+        '201':
+          description: User was created.
+          schema:
+            $ref: '#/definitions/UserBot'
+          
+        '404':
+          description: User not found.
+          schema:
+            $ref: '#/definitions/UserBot'
+definitions:
+  UserBot:
+    type: object
+    required:
+      - id
+      - firstName
+      - lastName
+    properties:
+        id:
+          type: integer
+          format: int32
+        firstName:
+          type: string
+          format: string
+        lastName:
+          type: string
+          format: string
+  
+  UsersBot:
+    type: array
+    items:
+      $ref: '#/definitions/UserBot'
