@@ -1,1 +1,0 @@
-& dotnet.exe run -c Debug --launch-profile Development
