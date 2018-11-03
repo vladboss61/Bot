@@ -36,12 +36,13 @@ namespace TelegramBot.Controllers{
         {
             var commandsCollection = HttpContext.RequestServices.GetRequiredService<CommandsCollection>();
             var client = HttpContext.RequestServices.GetRequiredService<ITelegramBotClient>();
-            var message = MessageFactory.CreateMessageOrDefault(update);
+
+            var message = MessageFactory.CreateMessage(update);
 
             //Proccessing updates of concrete type
             if (message == null)
             {
-                throw new Exception("thiking about text and type of exceptions");
+                throw new InvalidOperationException("Thinking about text and type of exceptions");
             } 
             
             //Search corresponding command and execute it

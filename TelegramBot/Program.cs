@@ -6,15 +6,17 @@ namespace TelegramBot
     using System.IO;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Configuration;    
     using NLog.Config;
     using NLog.Targets;
     using NLog;
+
     public class Program
     {
         public static void Main(string[] args)
         {
             LogManager.Configuration = CreateLoggingConfiguration();
+
             var logger = LogManager.GetLogger("StartServerLogger");
 
             try
@@ -29,16 +31,19 @@ namespace TelegramBot
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            var config = new ConfigurationBuilder()
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "";
+
+            var configuration = new ConfigurationBuilder()
                         .AddCommandLine(args)
                         .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile($"appsettings.{env}.json", false, true)
                         .AddJsonFile("appsettings.json", true, true)
                         .AddJsonFile("botsettings.json", false, true)
                         .Build();
 
             return WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
-                .UseConfiguration(config)
+                .UseConfiguration(configuration)
                 .UseStartup<Startup>();
         }
 

@@ -5,13 +5,13 @@ namespace TelegramBot.Models
 {
     internal class MessageFactory
     {
-        public static Message CreateMessage(Update update)
+        public static IMessage CreateMessage(Update update)
         {
-            Message message;
+            MessageAdapter message;
             switch(update.Type)
             {
                 case UpdateType.Message:
-                    message = update.Message;
+                    message = new MessageAdapter(update.Message);
                     break;         
                 default:
                     message =  null;

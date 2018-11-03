@@ -34,10 +34,11 @@ namespace TelegramBot.Models
 
         public async Task<IEnumerable<BotUser>> GetUsers()
         {
-            return await Task.Run(() => Context.BotUsers.ToList());
+            return await Context.BotUsers.ToListAsync();
         }
 
-        public async Task AddUser(BotUser user){
+        public async Task AddUser(BotUser user)
+        {
             if (await Context.BotUsers.FirstOrDefaultAsync(x => x.ChatId == user.ChatId) != null)
                 throw new Exception("User with such chat id exists in database");
 

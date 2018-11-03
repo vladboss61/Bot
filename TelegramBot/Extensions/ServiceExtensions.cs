@@ -7,15 +7,16 @@ using Telegram.Bot;
 using TelegramBot.Models.Commands;
 using TelegramBot.Models;
 
-namespace TelegramBot.Extensions{
+namespace TelegramBot.Extensions
+{
     public static class ServiceExtensions
     {
         private const string action = "api/bot/update";
         
         public static IServiceCollection AddTelegramBot(this IServiceCollection services)
         {
-            services.AddSingleton<ITelegramBotClient>(provider => 
-            {
+            services.AddSingleton<ITelegramBotClient>( provider => 
+            {                
                 var configuration = provider.GetRequiredService<IConfiguration>();
                 var client = new TelegramBotClient(configuration.GetToken());
                 
@@ -24,7 +25,7 @@ namespace TelegramBot.Extensions{
                 return client;
             });
 
-            services.AddTransient<IBotRepository, BotRepository>();
+            services.AddScoped<IBotRepository, BotRepository>();
 
             return services;
         }
@@ -37,7 +38,7 @@ namespace TelegramBot.Extensions{
             //                              .GetService<IBotRepository>())
             // };            
 
-            services.AddTransient<CommandsCollection>();
+            services.AddSingleton<CommandsCollection>();
             return services;
         }
     }

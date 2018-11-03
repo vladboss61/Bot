@@ -20,17 +20,16 @@ namespace TelegramBot.Models.Commands{
 
         public override async Task ExecuteAsync(IMessage message, ITelegramBotClient client)
         {   
-            var user = new BotUser().MessageToUser(message);
+            var user = new BotUser().MapMessageToUser(message);
             
             try{
                 await _repository.AddUser(user);
                 await client.SendTextMessageAsync(user.ChatId, $"You are now registered, {user.FirstName}");
             }
-            catch(Exception ex){
+            catch(Exception)
+            {
                 await client.SendTextMessageAsync(user.ChatId, "You're already registered");
-            }
-            
-            
+            }                       
         }
     }    
 }

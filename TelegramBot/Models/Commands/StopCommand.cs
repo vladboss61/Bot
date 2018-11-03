@@ -6,7 +6,9 @@ namespace TelegramBot.Models.Commands{
     public class StopCommand : Command
     {
         public override string Name => "stop";
+
         private readonly IBotRepository _rep;
+
         public StopCommand(IBotRepository repository){
             _rep = repository;
         }   

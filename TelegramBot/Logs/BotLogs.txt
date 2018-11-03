@@ -2,3 +2,7 @@
 2018-10-21 22:17:09.6102 --  Fatal -- Server is down. Fatal Test Exception
 2018-10-25 00:15:08.4080 -- Fatal -- Server is down. Fatal -- Unable to resolve service for type 'System.Collections.Generic.IReadOnlyList`1[TelegramBot.Models.Commands.Command]' while attempting to activate 'TelegramBot.Models.BotRepository'. --
 2018-10-25 00:21:06.1501 -- Fatal -- Server is down. Fatal -- Unable to resolve service for type 'System.Collections.Generic.IReadOnlyList`1[TelegramBot.Models.Commands.Command]' while attempting to activate 'TelegramBot.Models.BotRepository'. --
+2018-11-03 23:08:47.3512 -- Fatal -- Server is down. Fatal -- The configuration file 'botsettings.json' was not found and is not optional. The physical path is 'D:\Projects\Bot\TelegramBot\botsettings.json'. --
+2018-11-03 23:09:14.2990 -- Fatal -- Server is down. Fatal -- The configuration file 'botsettings.json' was not found and is not optional. The physical path is 'D:\Projects\Bot\TelegramBot\botsettings.json'. --
+2018-11-03 23:10:01.4512 -- Fatal -- Server is down. Fatal -- The configuration file 'botsettings.json' was not found and is not optional. The physical path is 'D:\Projects\Bot\TelegramBot\botsettings.json'. --
+2018-11-03 23:10:11.9645 -- Fatal -- Server is down. Fatal -- The configuration file 'botsettings.json' was not found and is not optional. The physical path is 'D:\Projects\Bot\TelegramBot\botsettings.json'. --
